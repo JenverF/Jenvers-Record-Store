@@ -96,7 +96,7 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error updating category", e);
         }
     }
 
@@ -112,7 +112,7 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error deleting category", e);
         }
     }
 
