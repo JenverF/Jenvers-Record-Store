@@ -5,10 +5,7 @@ import org.yearup.data.CategoryDao;
 import org.yearup.models.Category;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,11 +29,7 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
             ResultSet resultSet = preparedStatement.executeQuery()
         ) {
             while(resultSet.next()) {
-                int categoryId = resultSet.getInt("category_id");
-                String name = resultSet.getString("name");
-                String description = resultSet.getString("description");
-
-                categories.add(new Category(categoryId, name, description));
+                categories.add(mapRow(resultSet));
             }
         } catch (SQLException e) {
             throw new RuntimeException("Error getting all categories", e);
@@ -55,12 +48,12 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
 
             try(ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
-                    return new Category(resultSet.getInt("category_id"), resultSet.getString("name"), resultSet.getString("description"));
+                    return mapRow(resultSet);
                 }
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error getting by id", e);
         }
         return null;
     }
@@ -69,7 +62,24 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
     public Category create(Category category)
     {
         // create a new category
-        return null;
+        String query = "INSERT INTO categories (name, description) VALUES (?, ?)";
+        try(Connection connection = dataSource.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)
+        ) {
+            preparedStatement.setString(1, category.getName());
+            preparedStatement.setString(2, category.getDescription());
+
+            preparedStatement.executeUpdate();
+
+            ResultSet keys = preparedStatement.getGeneratedKeys();
+            if(keys.next()) {
+                category.setCategoryId(keys.getInt(1));
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Error creating category", e);
+        }
+        return category;
     }
 
     @Override
