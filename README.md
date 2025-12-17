@@ -48,8 +48,19 @@ Implemented RESTful API endpoints to manage products categories with full CRUD f
 
 ---
 ### Phase #2 - Bug Fixes
+**BUG #1**: Users have reported that the product search functionality is returning incorrect results.
 
+**How I fixed it**: Corrected inaccurate product search results by improving SQL query logic and properly handling query parameters.
 
+![img.png](images/BugFix1.png)
+
+---
+
+**BUG #2**: Some users have also noticed that some of the products seem to be duplicated. For example, a laptop is listed 3 times, and it appears to be the same product, but there are slight differences, such as the description or the price. If you look at the 3 laptops you notice that they are the same product. This laptop has been edited twice, the first time you updated the price, the second update was to the description. It appears that instead of updating the product, each time you tried to update, it added a new product to the database.
+
+**How I fixed it**: Resolved duplication issues during product updates by ensuring existing products are updated instead of creating entries.
+
+![img.png](images/BugFix2.png)
 
 ---
 
