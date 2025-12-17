@@ -53,10 +53,7 @@ public class ShoppingCartController
     // https://localhost:8080/cart/products/15 (15 is the productId to be added
     @PostMapping("products/{id}")
     public ShoppingCart addToCart(Principal principal, @PathVariable int id) {
-        String userName = principal.getName();
-        User user = userDao.getByUserName(userName);
-        int userId = user.getId();
-        return shoppingCartDao.addToCart(userId, id);
+        return null;
     }
 
     // add a PUT method to update an existing product in the cart - the url should be

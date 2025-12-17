@@ -53,17 +53,66 @@ public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDa
 
     @Override
     public ShoppingCart addToCart(int userId, int productId) {
-        return null;
+        String checkQuery = "SELECT quantity FROM shopping_cart WHERE user_id = ? AND product_id = ?;";
+        String insertQuery = "INSERT INTO shopping_cart (user_id, product_id, quantity) VALUES (?, ?, 1);";
+        String updateQuery = "UPDATE shopping_cart SET quantity = quantity + 1 WHERE user_id = ? AND product_id =?;";
+
+        try(Connection connection = dataSource.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(checkQuery)
+        ) {
+            preparedStatement.setInt(1, userId);
+            preparedStatement.setInt(2, productId);
+
+            try(ResultSet resultSet = preparedStatement.executeQuery()) {
+                if(resultSet.next()) {
+                    PreparedStatement update = connection.prepareStatement(updateQuery);
+                    update.setInt(1, userId);
+                    update.setInt(2, productId);
+                    update.executeUpdate();
+                    update.close();
+                } else {
+                    PreparedStatement insert = connection.prepareStatement(insertQuery);
+                    insert.setInt(1, userId);
+                    insert.setInt(2, productId);
+                    insert.executeUpdate();
+                    insert.close();
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to add to cart", e);
+        }
+        return getByUserId(userId);
     }
 
     @Override
     public void updateCart(int userId, int productId, int quantity) {
+        String query = "UPDATE shopping_cart SET quantity = ? WHERE user_id = ? AND product_id = ?;";
 
+        try(Connection connection = dataSource.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query)
+        ) {
+            preparedStatement.setInt(1, quantity);
+            preparedStatement.setInt(2, userId);
+            preparedStatement.setInt(3, productId);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public void clearCart(int userId) {
+        String query = "DELETE FROM shopping_cart WHERE user_id = ?;";
 
+        try(Connection connection = dataSource.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query)
+        ) {
+            preparedStatement.setInt(1, userId);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
