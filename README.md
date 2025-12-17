@@ -39,10 +39,10 @@ The application demonstrates backend development using Java, Spring Boot, and My
 
 ---
 
-## Phases Overview
+## 🌚 Phases Overview
 
 ---
-### Phase #1 - CategoriesController
+### 🌘 Phase #1 - CategoriesController
 Implemented RESTful API endpoints to manage products categories with full CRUD functionality:
 - `GET http://localhost:8080/categories`: Retrieve all categories
 - `GET http://localhost:8080/categories/{id}`: Retrieve a category by id
@@ -51,8 +51,8 @@ Implemented RESTful API endpoints to manage products categories with full CRUD f
 - `DELETE http://localhost:8080/categories/{id}`: Delete a category (Admin-only)
 
 ---
-### Phase #2 - Bug Fixes
-**BUG #1**: Users have reported that the product search functionality is returning incorrect results.
+### 🌗 Phase #2 - Bug Fixes 🐛
+**BUG #1 🐞**: Users have reported that the product search functionality is returning incorrect results.
 
 **How I fixed it**: Corrected inaccurate product search results by improving SQL query logic and properly handling query parameters.
 
@@ -60,14 +60,14 @@ Implemented RESTful API endpoints to manage products categories with full CRUD f
 
 ---
 
-**BUG #2**: Some users have also noticed that some of the products seem to be duplicated. For example, a laptop is listed 3 times, and it appears to be the same product, but there are slight differences, such as the description or the price. If you look at the 3 laptops you notice that they are the same product. This laptop has been edited twice, the first time you updated the price, the second update was to the description. It appears that instead of updating the product, each time you tried to update, it added a new product to the database.
+**BUG #2 🕷**: Some users have also noticed that some of the products seem to be duplicated. For example, a laptop is listed 3 times, and it appears to be the same product, but there are slight differences, such as the description or the price. If you look at the 3 laptops you notice that they are the same product. This laptop has been edited twice, the first time you updated the price, the second update was to the description. It appears that instead of updating the product, each time you tried to update, it added a new product to the database.
 
 **How I fixed it**: Resolved duplication issues during product updates by ensuring existing products are updated instead of creating entries.
 
 ![img.png](images/BugFix2.png)
 
 ---
-### Phase 3 - Shopping Cart
+### 🌖 Phase 3 - Shopping Cart
 Developed Shopping Cart features which allows users to:
 - Add products to cart
 - View current cart
@@ -77,7 +77,7 @@ Developed Shopping Cart features which allows users to:
 ![img.png](images/ViewShoppingCart.png)
 ---
 
-## Interesting Piece of Code:
+## 🧠 Interesting Piece of Code:
 ``` java
 // Helper method so I don't have to type all product entries
     protected static Product mapRow(ResultSet row) throws SQLException
@@ -137,13 +137,13 @@ Example of it being used:
 ```
 ---
 
-## Author
+## 📘 Author
 
 **Jenver Fernandez**
 
 📍 Seattle, Washington
 
-## References
+## 👥 References
 
 Van Putten, M. (2025). LTCA Instructor Year Up United.
 
