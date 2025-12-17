@@ -79,19 +79,62 @@ Developed Shopping Cart features which allows users to:
 
 ## Interesting Piece of Code:
 ``` java
-// check if input is in the menu items
-    public static boolean isValid(String input, String[] validList) {
-        // traverses the list of the menu items to check if item is in menu items
-        for (String valid : validList) {
-            // equalsIgnoreCase compares two strings ignoring difference in string
-            if (valid.equalsIgnoreCase(input.trim())) return true; //if item is in the list, return true
-        } // trim removes spaces before and after the words
-        return false; // if item is not in the menu items list, it is invalid
+// Helper method so I don't have to type all product entries
+    protected static Product mapRow(ResultSet row) throws SQLException
+    {
+        int productId = row.getInt("product_id");
+        String name = row.getString("name");
+        BigDecimal price = row.getBigDecimal("price");
+        int categoryId = row.getInt("category_id");
+        String description = row.getString("description");
+        String subCategory = row.getString("subcategory");
+        int stock = row.getInt("stock");
+        boolean isFeatured = row.getBoolean("featured");
+        String imageUrl = row.getString("image_url");
+
+        return new Product(productId, name, price, categoryId, description, subCategory, stock, isFeatured, imageUrl);
     }
 ```
 
-Why it's interesting:
+Why it's interesting: It's a helper method for writing the ResultSet for each method without actually writing every quality of that product and makes each method a lot cleaner and easier to look at.
 
+Example of it being used:
+
+``` java
+// Add product to users cart by user id
+    @Override
+    public ShoppingCart getByUserId(int userId) {
+        ShoppingCart cart = new ShoppingCart();
+        String query = """
+                SELECT sc.product_id, sc.quantity, p.name, p.price, p.category_id, p.description,
+                    p.subcategory, p.image_url, p.stock, p.featured
+                FROM shopping_cart as sc
+                INNER JOIN products as p
+                    ON sc.product_id = p.product_id
+                WHERE user_id = ?;""";
+
+        try(Connection connection = dataSource.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+        ) {
+            preparedStatement.setInt(1, userId);
+
+            try(ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    Product product = mapRow(resultSet);
+                    ShoppingCartItem cartItem = new ShoppingCartItem();
+                    cartItem.setProduct(product);
+                    cartItem.setQuantity(resultSet.getInt("quantity"));
+
+                    cart.add(cartItem);
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return cart;
+    }
+```
 ---
 
 ## Author
