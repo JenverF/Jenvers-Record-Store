@@ -18,6 +18,7 @@ public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDa
         super(dataSource);
     }
 
+    // Add product to users cart by user id
     @Override
     public ShoppingCart getByUserId(int userId) {
         ShoppingCart cart = new ShoppingCart();
@@ -51,6 +52,7 @@ public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDa
         return cart;
     }
 
+    // Add products to cart, if you want more than one of that item, the cart updates and quantity goes up
     @Override
     public ShoppingCart addToCart(int userId, int productId) {
         String checkQuery = "SELECT quantity FROM shopping_cart WHERE user_id = ? AND product_id = ?;";
@@ -65,12 +67,14 @@ public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDa
 
             try(ResultSet resultSet = preparedStatement.executeQuery()) {
                 if(resultSet.next()) {
+                    // Updates quantity of item if a product is already in their cart
                     PreparedStatement update = connection.prepareStatement(updateQuery);
                     update.setInt(1, userId);
                     update.setInt(2, productId);
                     update.executeUpdate();
                     update.close();
                 } else {
+                    // Inserts a new row for a product if it is not in their cart
                     PreparedStatement insert = connection.prepareStatement(insertQuery);
                     insert.setInt(1, userId);
                     insert.setInt(2, productId);
@@ -85,6 +89,7 @@ public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDa
         return getByUserId(userId);
     }
 
+    // Update amount of products in your cart
     @Override
     public void updateCart(int userId, int productId, int quantity) {
         String query = "UPDATE shopping_cart SET quantity = ? WHERE user_id = ? AND product_id = ?;";
@@ -101,6 +106,7 @@ public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDa
         }
     }
 
+    // Delete products from cart
     @Override
     public void clearCart(int userId) {
         String query = "DELETE FROM shopping_cart WHERE user_id = ?;";
@@ -116,7 +122,7 @@ public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDa
     }
 
 
-
+    // Helper method so I don't have to type all product entries
     protected static Product mapRow(ResultSet row) throws SQLException
     {
         int productId = row.getInt("product_id");
