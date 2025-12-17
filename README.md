@@ -12,16 +12,22 @@ The application demonstrates backend development using Java, Spring Boot, and My
 ---
 
 ### 🔐 Authentication
-- Secure user registration and login using JWT-based authentication
+- `POST http://localhost:8080/register`: User registration using JWT-based authentication
+- `POST http://localhost:8080/login`: Login using JWT-based authentication
 - Role-based access control for users and administrators
 
 ### 💸 Product Operations
-- Browse all products
-- Search and filter products by category, price range, and sub category
+- `GET http://localhost:8080/products`: Browse all products
+- `GET http://localhost:8080/products/{id}`: Search and filter products by category, price range, and sub category
 - Full CRUD operations for products and categories (Admin-only)
 
 ### 🛒 Shopping Cart
-- TBD
+- Add, update, view, and clear items in shopping cart
+- Shopping cart data is tied to user accounts
+- `GET http://localhost:8080/cart`
+- `POST http://localhost:8080/cart/products/{productId}`
+- `PUT http://localhost:8080/cart/products/{productId}`
+- `DELETE http://localhost:8080/cart`
 
 ### 👤 User Profile
 - TBD
@@ -36,15 +42,13 @@ The application demonstrates backend development using Java, Spring Boot, and My
 ## Phases Overview
 
 ---
-
 ### Phase #1 - CategoriesController
 Implemented RESTful API endpoints to manage products categories with full CRUD functionality:
-- `GET /categories`: Retrieve all categories
-- `GET /categories/{id}`: Retrieve a category by id
-- `POST /categories/{id}`: Add a new category (admin-only)
-- `PUT /categories/{id}`: Update a category (admin-only)
-- `DELETE /categories/{id}`: Delete a category (admin-only)
-
+- `GET http://localhost:8080/categories`: Retrieve all categories
+- `GET http://localhost:8080/categories/{id}`: Retrieve a category by id
+- `POST http://localhost:8080/categories/{id}`: Add a new category (Admin-only)
+- `PUT http://localhost:8080/categories/{id}`: Update a category (Admin-only)
+- `DELETE http://localhost:8080/categories/{id}`: Delete a category (Admin-only)
 
 ---
 ### Phase #2 - Bug Fixes
@@ -62,6 +66,15 @@ Implemented RESTful API endpoints to manage products categories with full CRUD f
 
 ![img.png](images/BugFix2.png)
 
+---
+### Phase 3 - Shopping Cart
+Developed Shopping Cart features which allows users to:
+- Add products to cart
+- View current cart
+- Update product quantities
+- Clear their cart
+
+![img.png](images/ViewShoppingCart.png)
 ---
 
 ## Interesting Piece of Code:
