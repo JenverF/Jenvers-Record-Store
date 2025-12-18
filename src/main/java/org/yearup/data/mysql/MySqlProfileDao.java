@@ -44,6 +44,7 @@ public class MySqlProfileDao extends MySqlDaoBase implements ProfileDao
         }
     }
 
+    // Get profile by user id
     @Override
     public Profile getByUserId(int userId) {
         String query = "SELECT * FROM profiles WHERE user_id = ?;";
@@ -64,6 +65,7 @@ public class MySqlProfileDao extends MySqlDaoBase implements ProfileDao
         return null;
     }
 
+    // Update existing profile with user id
     @Override
     public void update(int userId, Profile profile) {
         String query = "UPDATE profiles SET first_name = ?, last_name = ?, phone = ?, email = ?, address = ?, city = ?, state = ?, zip = ? WHERE user_id = ?;";

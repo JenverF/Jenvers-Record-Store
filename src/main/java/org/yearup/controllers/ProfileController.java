@@ -22,6 +22,7 @@ public class ProfileController {
         this.userDao = userDao;
     }
 
+    // add a get method to get a user's profile
     @GetMapping
     public Profile getProfile(Principal principal) {
         String username = principal.getName();
@@ -31,6 +32,7 @@ public class ProfileController {
         return profileDao.getByUserId(userId);
     }
 
+    // add a put method to update an existing user's profile
     @PutMapping
     public void updateProfile(Principal principal, @RequestBody Profile profile) {
         String username = principal.getName();
