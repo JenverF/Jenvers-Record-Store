@@ -30,7 +30,9 @@ The application demonstrates backend development using Java, Spring Boot, and My
 - `DELETE http://localhost:8080/cart`
 
 ### 👤 User Profile
-- TBD
+- Create, view and update user profile details
+- `GET http://localhost:8080/profile`
+- `PUT http://localhost:8080/profile`
 
 ### 🐛 Bug fixes
 - Improved product search accuracy
@@ -49,7 +51,6 @@ Implemented RESTful API endpoints to manage products categories with full CRUD f
 - `POST http://localhost:8080/categories/{id}`: Add a new category (Admin-only)
 - `PUT http://localhost:8080/categories/{id}`: Update a category (Admin-only)
 - `DELETE http://localhost:8080/categories/{id}`: Delete a category (Admin-only)
-
 ---
 ### 🌗 Phase #2 - Bug Fixes 🐛
 **BUG #1 🐞**: Users have reported that the product search functionality is returning incorrect results.
@@ -59,7 +60,6 @@ Implemented RESTful API endpoints to manage products categories with full CRUD f
 ![img.png](images/BugFix1.png)
 
 ---
-
 **BUG #2 🕷**: Some users have also noticed that some of the products seem to be duplicated. For example, a laptop is listed 3 times, and it appears to be the same product, but there are slight differences, such as the description or the price. If you look at the 3 laptops you notice that they are the same product. This laptop has been edited twice, the first time you updated the price, the second update was to the description. It appears that instead of updating the product, each time you tried to update, it added a new product to the database.
 
 **How I fixed it**: Resolved duplication issues during product updates by ensuring existing products are updated instead of creating entries.
@@ -75,6 +75,13 @@ Developed Shopping Cart features which allows users to:
 - Clear their cart
 
 ![img.png](images/ViewShoppingCart.png)
+---
+### 🌕 Phase 4 - User Profile
+Developed profiles for new users to create.
+- Get user profile details
+- Update profile information
+
+![img.png](images/CreateUserProfile.png)
 ---
 
 ## 🧠 Interesting Piece of Code:
