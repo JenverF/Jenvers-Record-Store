@@ -46,13 +46,45 @@ public class MySqlProfileDao extends MySqlDaoBase implements ProfileDao
 
     @Override
     public Profile getByUserId(int userId) {
+        String query = "SELECT * FROM profiles WHERE user_id = ?;";
 
+        try(Connection connection = dataSource.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+        ) {
+            preparedStatement.setInt(1, userId);
+
+            try(ResultSet resultSet = preparedStatement.executeQuery()) {
+                if(resultSet.next()) {
+                    return new Profile(resultSet.getInt("user_id"), resultSet.getString("first_name"), resultSet.getString("last_name"), resultSet.getString("phone"), resultSet.getString("email"), resultSet.getString("address"), resultSet.getString("city"), resultSet.getString("state"), resultSet.getString("zip"));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         return null;
     }
 
     @Override
-    public void update(int id, Profile profile) {
+    public void update(int userId, Profile profile) {
+        String query = "UPDATE profiles SET first_name = ?, last_name = ?, phone = ?, email = ?, address = ?, city = ?, state = ?, zip = ? WHERE user_id = ?;";
 
+        try(Connection connection = dataSource.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query)
+        ) {
+            preparedStatement.setString(1, profile.getFirstName());
+            preparedStatement.setString(2, profile.getLastName());
+            preparedStatement.setString(3, profile.getPhone());
+            preparedStatement.setString(4, profile.getEmail());
+            preparedStatement.setString(5, profile.getAddress());
+            preparedStatement.setString(6, profile.getCity());
+            preparedStatement.setString(7, profile.getState());
+            preparedStatement.setString(8, profile.getZip());
+            preparedStatement.setInt(9, userId);
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
